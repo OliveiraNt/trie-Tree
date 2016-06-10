@@ -141,7 +141,7 @@ void getWords(FILE *textFile, FILE *trieFile){
 
 
 
-// to check is the string lies in trie tree
+// to check if the string is in trie tree
 int check(char str[], FILE *trieFile){
 	Node n;
 	memset(&n, 0, sizeof(Node));
