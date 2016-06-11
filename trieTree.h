@@ -17,6 +17,5 @@ struct _Node {
 int createNode(FILE *trieFile);
 int insertWord(char str[], FILE *trieFile);
 void getWords(FILE *textFile, FILE *trieFile);
-int check(char str[], FILE *trieFile);
 
 #endif
