@@ -23,7 +23,7 @@ int insertWord(char str[], FILE *trieFile){
 		if(str[k] == ' ' || str[k] == '\n' || str[k] == '\t'){
 			printf("k=%d\n", k);
 
-			return 0;
+			return 1;
 		}
 	}
 
@@ -68,15 +68,15 @@ int insertWord(char str[], FILE *trieFile){
 		printf("is_end = %d\n", n.is_end);
 		*/
 	
-		return 1;
+		return 0;
 	}
 	
 	else{
 		printf("entrou no 2\n");//db
 		while(n.next_char[str[j] - 'a'] != 0){
-			if(n.is_end == 1){
+			if(n.is_end == 1 && j == (strlen(str)-1)){
 				printf("palavra ja inserida\n");//db
-				return 0;
+				return 1;
 			}
 			actReg = n.next_char[str[j] - 'a'];
 			fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
@@ -111,7 +111,7 @@ int insertWord(char str[], FILE *trieFile){
 		printf("is_end = %d\n", n.is_end);
 		*/
 	
-		return 1;
+		return 0;
 	}
 }
 
@@ -128,12 +128,19 @@ void getWords(FILE *textFile, FILE *trieFile){
 			c = fgetc(textFile);
 		}
 		else{
-			insertWord(str, trieFile);
-			//printf("%s", str);//db
-			//printf("...\n");//db
-			memset(str, 0, 99);
-			i = 0;
-			c = fgetc(textFile);
+			if(str){
+				insertWord(str, trieFile);
+				//printf("%s", str);//db
+				//printf("...\n");//db
+				memset(str, 0, 99);
+				i = 0;
+				c = fgetc(textFile);
+			}
+			else{
+				memset(str, 0, 99);
+				i = 0;
+				c = fgetc(textFile);
+			}
 		}
 	}
 	
@@ -141,35 +148,4 @@ void getWords(FILE *textFile, FILE *trieFile){
 
 
 
-// to check is the string lies in trie tree
-int check(char str[], FILE *trieFile){
-	Node n;
-	memset(&n, 0, sizeof(Node));
-	int i;
-	int actReg;
 
-    fseek(trieFile, 0, SEEK_SET);
-	fread(&n, sizeof(Node), 1, trieFile);
-	for(i = 0; i<strlen(str); i++){
-		if(n.next_char[str[i] - 'a'] != 0){
-			actReg = n.next_char[str[i] - 'a'];
-			fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
-			fread(&n, sizeof(Node), 1, trieFile);
-			
-		}
-		else{
-			if(n.is_end == 1){
-				printf("Word Found\n");
-				return 1;
-			}
-			else {
-				printf("Word Not Found\n");
-				return 0;
-			}
-		}
-	}
-	printf("Word Not Found\n");
-
-	return 0;
-	
-}

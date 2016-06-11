@@ -30,11 +30,6 @@ int main(int argc, char** argv){
 	createNode(trieFile);
 	getWords(text, trieFile);
 
-	char str1[] = "incidents";
-	char str2[] = "adventures";
-
-	check(str1, trieFile);
-	check(str2, trieFile);
 
     fclose(text);
     fclose(trieFile);
