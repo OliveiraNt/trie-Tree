@@ -148,4 +148,3 @@ void getWords(FILE *textFile, FILE *trieFile){
 
 
 
-
