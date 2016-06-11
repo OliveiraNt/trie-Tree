@@ -12,11 +12,29 @@ struct _Node {
 
 int check(char str[], FILE *trieFile){
 	Node n;
-	memset(&n, 0, sizeof(Node));
+
 	int i;
 	int actReg;
 
-    fseek(trieFile, 0, SEEK_SET);
+	fseek(trieFile, 0, SEEK_SET);
+	fread(&n, sizeof(Node), 1, trieFile);
+
+	while(n.next_char[str[i] - 'a'] != 0){
+			if(n.is_end == 1 && i == (strlen(str)-1)){
+				printf("palavra ja inserida\n");//db
+				return 1;
+			}
+			actReg = n.next_char[str[i] - 'a'];
+			fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
+			fread(&n, sizeof(Node), 1, trieFile);
+			i++;
+	}
+	
+	printf("Word Not Found\n");
+
+	return 1;
+
+    /*fseek(trieFile, 0, SEEK_SET);
 	fread(&n, sizeof(Node), 1, trieFile);
 	for(i = 0; i<strlen(str); i++){
 		if(n.next_char[str[i] - 'a'] != 0){
@@ -28,17 +46,17 @@ int check(char str[], FILE *trieFile){
 		else{
 			if(n.is_end == 1){
 				printf("Word Found\n");
-				return 1;
+				return 0;
 			}
 			else {
 				printf("Word Not Found\n");
-				return 0;
+				return 1;
 			}
 		}
 	}
 	printf("Word Not Found\n");
 
-	return 0;
+	return 1;*/
 	
 }
 
@@ -73,4 +91,4 @@ int main(int argc, char** argv){
     fclose(trieFile);
 
     return 0;
-}
+}	
