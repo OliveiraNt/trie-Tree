@@ -21,7 +21,7 @@ int insertWord(char str[], FILE *trieFile){
 
 	for(k = 0; k < strlen(str); k++){
 		if(str[k] == ' ' || str[k] == '\n' || str[k] == '\t'){
-			printf("k=%d\n", k);
+			//printf("k=%d\n", k);
 
 			return 1;
 		}
@@ -39,9 +39,9 @@ int insertWord(char str[], FILE *trieFile){
 
 	//printf("child: %d\n", n.next_char[str[0] - 'a']);//db
 	if(n.next_char[str[0] - 'a'] == 0){
-		printf("entrou no 1\n");//db
+		//printf("entrou no 1\n");//db
 		for(i = 0; i< strlen(str); i++){
-			printf("%c\n", str[i]);//db
+			//printf("%c\n", str[i]);//db
 			newReg = createNode(trieFile);
 			//printf("newReg = %d\n", newReg);//db
 			fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
@@ -60,7 +60,7 @@ int insertWord(char str[], FILE *trieFile){
 		n.is_end = 1;
 		fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
 		fwrite(&n, sizeof(Node), 1, trieFile);
-		printf("nova palavra\n");//db
+		//printf("nova palavra\n");//db
 		
 		/*   //db
 		fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
@@ -72,10 +72,10 @@ int insertWord(char str[], FILE *trieFile){
 	}
 	
 	else{
-		printf("entrou no 2\n");//db
+		//printf("entrou no 2\n");//db
 		while(n.next_char[str[j] - 'a'] != 0){
 			if(n.is_end == 1 && j == (strlen(str)-1)){
-				printf("palavra ja inserida\n");//db
+				//printf("palavra ja inserida\n");//db
 				
 				return 1;
 			}
@@ -85,7 +85,7 @@ int insertWord(char str[], FILE *trieFile){
 				n.is_end = 1;
 				fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
 				fwrite(&n, sizeof(Node), 1, trieFile);
-				printf("nova palavra\n");//db
+				//printf("nova palavra\n");//db
 				
 				return 0;
 			}
@@ -95,7 +95,7 @@ int insertWord(char str[], FILE *trieFile){
 			j++;
 		}
 		for(i = j; i<strlen(str); i++){
-			printf("%c\n", str[i]);//db
+			//printf("%c\n", str[i]);//db
 			newReg = createNode(trieFile);
 			//printf("newReg = %d\n", newReg);//db
 			fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
@@ -114,7 +114,7 @@ int insertWord(char str[], FILE *trieFile){
 		n.is_end = 1;
 		fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
 		fwrite(&n, sizeof(Node), 1, trieFile);
-		printf("nova palavra\n");//db
+		//printf("nova palavra\n");//db
 
 		/*   //db
 		fseek(trieFile, actReg*sizeof(Node), SEEK_SET);

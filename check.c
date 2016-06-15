@@ -20,7 +20,7 @@ int check(char str[], FILE *trieFile){
 	fread(&n, sizeof(Node), 1, trieFile);
 
 	if(n.next_char[str[0] - 'a'] == 0){
-		printf("Word not Found 1\n");
+		printf("Word not Found \n");
 		return 1;
 	}
 
@@ -31,7 +31,7 @@ int check(char str[], FILE *trieFile){
 			fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
 			fread(&n, sizeof(Node), 1, trieFile);
 			if(n.next_char[str[i + 1] - 'a'] == 0){
-				printf("Word not Found 2\n");
+				printf("Word not Found \n");
 				return 1;
 			}
 		}
@@ -39,11 +39,11 @@ int check(char str[], FILE *trieFile){
 		fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
 		fread(&n, sizeof(Node), 1, trieFile);
 		if(n.is_end == 0){
-			printf("Word not Found 3\n");
+			printf("Word not Found \n");
 			return 1;
 		}
 		if(n.is_end == 1){
-			printf("Word Found Porra\n");
+			printf("Word Found \n");
 			return 0;
 		}
 	}
