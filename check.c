@@ -11,59 +11,48 @@ struct _Node {
 
 
 int check(char str[], FILE *trieFile){
+	
 	Node n;
-
 	int i;
-	int actReg;
-
+	int actReg = 0;
+	
 	fseek(trieFile, 0, SEEK_SET);
 	fread(&n, sizeof(Node), 1, trieFile);
 
-	while(n.next_char[str[i] - 'a'] != 0){
-			if(n.is_end == 1 && i == (strlen(str)-1)){
-				printf("palavra ja inserida\n");//db
-				return 1;
-			}
-			actReg = n.next_char[str[i] - 'a'];
-			fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
-			fread(&n, sizeof(Node), 1, trieFile);
-			i++;
+	if(n.next_char[str[0] - 'a'] == 0){
+		printf("Word not Found 1\n");
+		return 1;
 	}
-	
-	printf("Word Not Found\n");
 
-	return 1;
-
-    /*fseek(trieFile, 0, SEEK_SET);
-	fread(&n, sizeof(Node), 1, trieFile);
-	for(i = 0; i<strlen(str); i++){
-		if(n.next_char[str[i] - 'a'] != 0){
+	else{
+		for(i = 0; i < strlen(str); i++){
 			actReg = n.next_char[str[i] - 'a'];
+			printf("actReg = %d\n", actReg);
 			fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
 			fread(&n, sizeof(Node), 1, trieFile);
-			
-		}
-		else{
-			if(n.is_end == 1){
-				printf("Word Found\n");
-				return 0;
-			}
-			else {
-				printf("Word Not Found\n");
+			if(n.next_char[str[i + 1] - 'a'] == 0){
+				printf("Word not Found 2\n");
 				return 1;
 			}
 		}
+		actReg = n.next_char[str[i] - 'a'];
+		fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
+		fread(&n, sizeof(Node), 1, trieFile);
+		if(n.is_end == 0){
+			printf("Word not Found 3\n");
+			return 1;
+		}
+		if(n.is_end == 1){
+			printf("Word Found Porra\n");
+			return 0;
+		}
 	}
-	printf("Word Not Found\n");
-
-	return 1;*/
-	
 }
 
 
 int main(int argc, char** argv){
 	
-	FILE *text, *trieFile;
+	FILE *trieFile;
         
         
 	if(argc != 2){
@@ -74,18 +63,78 @@ int main(int argc, char** argv){
         }
  
 	trieFile = fopen(argv[1],"r");
-	if(!text){
+	if(!trieFile){
 		fprintf(stderr,"Arquivo %s não pode ser aberto para leitura\n", argv[1]);
 
 		return 1;
 	}
 	
 	
-	char str1[] = "incidents";
+	char str1[] = {'i', 'n', 'c', 'i', 'd', 'e', 'n', 't', 's', '\0'};
 	char str2[] = "adventures";
 
 	check(str1, trieFile);
 	check(str2, trieFile);
+	/*
+	Node n;
+	int reg = 0;
+
+	
+	fread(&n, sizeof(Node), 1, trieFile);
+	reg = n.next_char['a' - 'a'];
+	printf("%d\n", reg);
+	printf("%d\n", n.is_end);
+	fseek(trieFile, reg*sizeof(Node), SEEK_SET);
+	fread(&n, sizeof(Node), 1, trieFile);
+	reg = n.next_char['d' - 'a'];
+	printf("%d\n", reg);
+	printf("%d\n", n.is_end);
+	fseek(trieFile, reg*sizeof(Node), SEEK_SET);
+	fread(&n, sizeof(Node), 1, trieFile);
+	reg = n.next_char['v' - 'a'];
+	printf("%d\n", reg);
+	printf("%d\n", n.is_end);
+	fseek(trieFile, reg*sizeof(Node), SEEK_SET);
+	fread(&n, sizeof(Node), 1, trieFile);
+	reg = n.next_char['e' - 'a'];
+	printf("%d\n", reg);
+	printf("%d\n", n.is_end);
+	fseek(trieFile, reg*sizeof(Node), SEEK_SET);
+	fread(&n, sizeof(Node), 1, trieFile);
+	reg = n.next_char['n' - 'a'];
+	printf("%d\n", reg);
+	printf("%d\n", n.is_end);
+	fseek(trieFile, reg*sizeof(Node), SEEK_SET);
+	fread(&n, sizeof(Node), 1, trieFile);
+	reg = n.next_char['t' - 'a'];
+	printf("%d\n", reg);
+	printf("%d\n", n.is_end);
+	fseek(trieFile, reg*sizeof(Node), SEEK_SET);
+	fread(&n, sizeof(Node), 1, trieFile);
+	reg = n.next_char['u' - 'a'];
+	printf("%d\n", reg);
+	printf("%d\n", n.is_end);
+	fseek(trieFile, reg*sizeof(Node), SEEK_SET);
+	fread(&n, sizeof(Node), 1, trieFile);
+	reg = n.next_char['r' - 'a'];
+	printf("%d\n", reg);
+	printf("%d\n", n.is_end);
+	fseek(trieFile, reg*sizeof(Node), SEEK_SET);
+	fread(&n, sizeof(Node), 1, trieFile);
+	reg = n.next_char['e' - 'a'];
+	printf("%d\n", reg);
+	printf("%d\n", n.is_end);
+	fseek(trieFile, reg*sizeof(Node), SEEK_SET);
+	fread(&n, sizeof(Node), 1, trieFile);
+	reg = n.next_char['s' - 'a'];
+	printf("%d\n", reg);
+	printf("%d\n", n.is_end);
+	fseek(trieFile, reg*sizeof(Node), SEEK_SET);
+	fread(&n, sizeof(Node), 1, trieFile);
+	printf("%d\n", n.is_end);
+	*/
+	
+	
 
     
     fclose(trieFile);
