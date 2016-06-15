@@ -76,7 +76,18 @@ int insertWord(char str[], FILE *trieFile){
 		while(n.next_char[str[j] - 'a'] != 0){
 			if(n.is_end == 1 && j == (strlen(str)-1)){
 				printf("palavra ja inserida\n");//db
+				
 				return 1;
+			}
+			if(n.is_end == 0 && j == (strlen(str)-1)){
+				fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
+				fread(&n, sizeof(Node), 1, trieFile);
+				n.is_end = 1;
+				fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
+				fwrite(&n, sizeof(Node), 1, trieFile);
+				printf("nova palavra\n");//db
+				
+				return 0;
 			}
 			actReg = n.next_char[str[j] - 'a'];
 			fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
