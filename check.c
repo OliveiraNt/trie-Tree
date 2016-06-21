@@ -10,7 +10,7 @@ struct _Node {
 };
 
 
-int check(char str[], FILE *trieFile){
+int check(char * str, FILE *trieFile){
 	
 	Node n;
 	int i;
@@ -20,18 +20,18 @@ int check(char str[], FILE *trieFile){
 	fread(&n, sizeof(Node), 1, trieFile);
 
 	if(n.next_char[str[0] - 'a'] == 0){
-		printf("Word not Found \n");
+		printf("Word not Found 1\n");
 		return 1;
 	}
 
 	else{
 		for(i = 0; i < strlen(str); i++){
 			actReg = n.next_char[str[i] - 'a'];
-			printf("actReg = %d\n", actReg);
+			//printf("actReg = %d\n", actReg);//db
 			fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
 			fread(&n, sizeof(Node), 1, trieFile);
 			if(n.next_char[str[i + 1] - 'a'] == 0){
-				printf("Word not Found \n");
+				printf("Word not Found 2\n");
 				return 1;
 			}
 		}
@@ -39,11 +39,11 @@ int check(char str[], FILE *trieFile){
 		fseek(trieFile, actReg*sizeof(Node), SEEK_SET);
 		fread(&n, sizeof(Node), 1, trieFile);
 		if(n.is_end == 0){
-			printf("Word not Found \n");
+			printf("Word not Found 3\n");
 			return 1;
 		}
 		if(n.is_end == 1){
-			printf("Word Found \n");
+			printf("Word Found\n");
 			return 0;
 		}
 	}
@@ -55,7 +55,7 @@ int main(int argc, char** argv){
 	FILE *trieFile;
         
         
-	if(argc != 2){
+	if(argc != 3){
 		fprintf(stderr,"Erro na chamada do comando.\n");
 		fprintf(stderr,"Uso: %s [ARQUIVO ORIGEM] [ARQUIVO DESTINO].\n", argv[0]);
 
@@ -70,11 +70,10 @@ int main(int argc, char** argv){
 	}
 	
 	
-	char str1[] = {'i', 'n', 'c', 'i', 'd', 'e', 'n', 't', 's', '\0'};
-	char str2[] = "adventures";
+	char* str1;
+	str1 = argv[2];
 
 	check(str1, trieFile);
-	check(str2, trieFile);
 	/*
 	Node n;
 	int reg = 0;
